@@ -24,23 +24,23 @@ pro3 = True
 race = True
 
 auxiliarDeck = []
-startingDeck = []
-parkDeck = []
-raceDeck = []
-winDeck = []
+chineseDeck = []
+chineseParkDeck = []
+chineseRaceDeck = []
+chineseWinDeck = []
 
 ## def non starting importExport functions
 
 def importCSVinDeck(csvFile, deck):
    resetDeck(auxiliarDeck)
    copyCSVinAuxiliarDeck(csvFile)
-   copyAuxiliarDeckinDeck(auxiliarDeck, deck)
+   copyAuxiliarDeckinDeck(deck)
    resetDeck(auxiliarDeck)
 	
 def exportDeckinCSV(deck, csvFile):
    resetDeck(auxiliarDeck)
    copyDeckinAuxiliarDeck(deck)
-   copyAuxiliarDeckinCSV(auxiliarDeck, csvFile)
+   copyAuxiliarDeckinCSV(csvFile)
    resetDeck(auxiliarDeck)
 
 ## def functions inside non starting importExport functions
@@ -56,7 +56,7 @@ def copyCSVinAuxiliarDeck(csvFile):
       for row in reader:
             auxiliarDeck.append(row)
 
-def copyAuxiliarDeckinDeck(auxiliarDeck, deck):
+def copyAuxiliarDeckinDeck(deck):
    CSVline = 0
    linesPerCapsule = 2
    totalLines = len(auxiliarDeck)
@@ -73,59 +73,60 @@ def copyDeckinAuxiliarDeck(deck):
       for line in range(linesPerCapsule):
          auxiliarDeck.append(deck[capsule][line])
 
-def copyAuxiliarDeckinCSV(auxiliarDeck, csvFile):
+def copyAuxiliarDeckinCSV(csvFile):
    with open("{}.csv".format(csvFile), "w", newline="") as file:
       writer = csv.writer(file, delimiter=",")
       writer.writerows(auxiliarDeck)
 
 ## def starting importExport functions
 
-def importStartingCSVinStartingDeck(startingCSV, startingDeck):
+def importLanguageCSVinLanguageDeck(languageCSV, languageDeck):
    resetDeck(auxiliarDeck)
-   copyStartingCSVinAuxiliarDeck(startingCSV)
-   copyAuxiliarDeckinStartingDeck(auxiliarDeck, startingDeck)
+   copyLanguageCSVinAuxiliarDeck(languageCSV)
+   copyAuxiliarDeckinLanguageDeck(languageDeck)
    resetDeck(auxiliarDeck)
 	
-def exportStartingDeckinCSV(startingDeck, csvFile):
+def exportLanguageDeckinCSV(languageDeck, csvFile):
    resetDeck(auxiliarDeck)
-   copyStartingDeckinAuxiliarDeck(startingDeck)
-   copyAuxiliarDeckinCSV(auxiliarDeck, csvFile)
+   copyLanguageDeckinAuxiliarDeck(languageDeck)
+   copyAuxiliarDeckinCSV(csvFile)
    resetDeck(auxiliarDeck)
 
 ## def functions inside starting importExport functions
 
-def copyStartingCSVinAuxiliarDeck(startingCSV):
-   with open("{}.csv".format(startingCSV)) as file:
+def copyLanguageCSVinAuxiliarDeck(languageCSV):
+   with open("{}.csv".format(languageCSV)) as file:
       reader = csv.reader(file, delimiter=",")
       for row in reader:
             auxiliarDeck.append(row)
 
-def copyAuxiliarDeckinStartingDeck(auxiliarDeck, startingDeck):
+def copyAuxiliarDeckinLanguageDeck(languageDeck):
    element = 0
    for element in range(len(auxiliarDeck)):
-      startingDeck.append(auxiliarDeck[element])
+      languageDeck.append(auxiliarDeck[element])
       element += 1
 
-def copyStartingDeckinAuxiliarDeck(startingDeck):
-   totalLines = len(startingDeck)
+def copyLanguageDeckinAuxiliarDeck(languageDeck):
+   totalLines = len(languageDeck)
    for line in range(totalLines):
       auxiliarDeck.append([0, 0, 0])
-      auxiliarDeck.append(startingDeck[line])
+      auxiliarDeck.append(languageDeck[line])
 
 
 ## def askCapsule
 
 def askCapsule():
    previousFaultState = "noPriorFailure"
-   askStatement(previousFaultState)
+   showStatement(previousFaultState)
+   askAnswer(previousFaultState)
 
-## def askStatement
+## def showStatement
 
-def askStatement(previousFaultState):
+def showStatement(previousFaultState):
    global print1
    print1 = item["statement"]
    print(item["statement"])
-   askAnswer(previousFaultState)
+   
 
 ## def askAnswer
 
@@ -173,13 +174,13 @@ def examRequestWithItem(request):
 
 def examinationAction(examAnswer, previousFaultState):
    if examAnswer == "-showall":
-      showDeck(startingDeck)
+      showDeck(chineseDeck)
    if examAnswer == "-showremain":
-      showDeck(parkDeck)
+      showDeck(chineseParkDeck)
    if examAnswer == "-showstudy":
-      showDeck(raceDeck)
+      showDeck(chineseRaceDeck)
    if examAnswer == "-showlearn":
-      showDeck(winDeck)
+      showDeck(chineseWinDeck)
    elif examAnswer == "-reset":
       resetPro3()
    elif examAnswer == "-exit":
@@ -202,7 +203,7 @@ def examinationAction(examAnswer, previousFaultState):
 
 def failedAnswerAction(previousFaultState):
    if previousFaultState == "noPriorFailure":
-      raceDeck[0][0][1] = decreaseTank()
+      chineseRaceDeck[0][0][1] = decreaseTank()
 
       askAnswer("priorFailure")
 
@@ -214,7 +215,7 @@ def failedAnswerAction(previousFaultState):
 def successfulAnswerAction(previousFaultState):
 
    if previousFaultState == "noPriorFailure": 
-      raceDeck[0][0][1] = increaseTank() 
+      chineseRaceDeck[0][0][1] = increaseTank() 
 
    print(print1)
    
@@ -222,14 +223,14 @@ def successfulAnswerAction(previousFaultState):
 
    adjustFuel()
 
-   sortDeck(raceDeck)
+   sortDeck(chineseRaceDeck)
    
    examCapsuleMovement()
 
 ## def decreaseTank
 
 def decreaseTank():
-   tankSelection = int(raceDeck[0][0][1])
+   tankSelection = int(chineseRaceDeck[0][0][1])
    if tankSelection < 2:
       tankOperation = 0
    else:
@@ -239,23 +240,23 @@ def decreaseTank():
 ## def increaseTank 
 
 def increaseTank():
-   tankOperation = int(raceDeck[0][0][1]) + 2
+   tankOperation = int(chineseRaceDeck[0][0][1]) + 2
    return str(tankOperation)
 
 ## def adjustFuel
 
 def adjustFuel():     
-   raceDeck[0][0][0] = refuel()
+   chineseRaceDeck[0][0][0] = refuel()
 
    spendFuel()
 
 ## def functions inside adjustFuel function
 
 def refuel():
-   return str(raceDeck[0][0][1]) 
+   return str(chineseRaceDeck[0][0][1]) 
 
 def spendFuel():
-   for row in raceDeck:
+   for row in chineseRaceDeck:
       fuelSelection = int(row[0][0])
       if fuelSelection > 0:
          fuelSelection -= 1
@@ -271,26 +272,26 @@ def selectionParameterOrder(parameterOrder):
 ## def examCapsuleMovement
 
 def examCapsuleMovement():
-   fuel = int(raceDeck[0][0][0])
-   tank = int(raceDeck[0][0][1])
+   fuel = int(chineseRaceDeck[0][0][0])
+   tank = int(chineseRaceDeck[0][0][1])
 
    if tank >= 12:
 
-      extractFromDeckInsertToDeck(raceDeck, winDeck)
+      extractFromDeckInsertToDeck(chineseRaceDeck, chineseWinDeck)
 
       resetWinCapsule()
 
-      exportDeckinCSV(winDeck, "win")
-      exportDeckinCSV(raceDeck, "race")
+      exportDeckinCSV(chineseWinDeck, "chineseWin")
+      exportDeckinCSV(chineseRaceDeck, "chineseRace")
       prYellow("WWWWWIIIIIIIIIINNNNNNNNNNNNNNNNNNNNNNNN")
       step = input()
 
    if fuel >= 1:
    ## if elegirElemento("combustible")
-      extractFromDeckInsertToDeck(parkDeck, raceDeck)
+      extractFromDeckInsertToDeck(chineseParkDeck, chineseRaceDeck)
 
-      exportDeckinCSV(parkDeck, "park")
-      exportDeckinCSV(raceDeck, "race")
+      exportDeckinCSV(chineseParkDeck, "chinesePark")
+      exportDeckinCSV(chineseRaceDeck, "chineseRace")
       prYellow("ONE MOOOOOREEEEEEE")
       step = input()
 
@@ -306,14 +307,14 @@ def extractCapsulefromDeck(deck, position):
 ## def resetWinCapsule
 
 def resetWinCapsule(): 
-   winDeck[0][0][0] = 0
-   winDeck[0][0][1] = 10
-   winDeck[0][0][2] = 3
+   chineseWinDeck[0][0][0] = 0
+   chineseWinDeck[0][0][1] = 10
+   chineseWinDeck[0][0][2] = 3
 
 ## def preparation
 
 def preparation():
-   extractFromDeckInsertToDeck(parkDeck, raceDeck)
+   extractFromDeckInsertToDeck(chineseParkDeck, chineseRaceDeck)
 # to extract first capsule from park and insert in race to initiate correctly
 
 ## def showDeck
@@ -331,12 +332,12 @@ def showDeck(deck):
 
 def resetPro3():
    global race
-   resetDeck(parkDeck)
-   exportDeckinCSV(parkDeck, "park")
-   resetDeck(raceDeck)
-   exportDeckinCSV(raceDeck, "race")
-   resetDeck(winDeck)
-   exportDeckinCSV(winDeck, "win")
+   resetDeck(chineseParkDeck)
+   exportDeckinCSV(chineseParkDeck, "chinesePark")
+   resetDeck(chineseRaceDeck)
+   exportDeckinCSV(chineseRaceDeck, "chineseRace")
+   resetDeck(chineseWinDeck)
+   exportDeckinCSV(chineseWinDeck, "chineseWin")
    race = False
 
    print("Reset Complete")
@@ -372,20 +373,20 @@ while pro3:
 
    ## importExport CSV and decks
 
-   importStartingCSVinStartingDeck("starting", startingDeck)
-   importCSVinDeck("race", raceDeck)
+   importLanguageCSVinLanguageDeck("chinese", chineseDeck)
+   importCSVinDeck("chineseRace", chineseRaceDeck)
 
-   if len(raceDeck) < 1:
-      exportStartingDeckinCSV(startingDeck, "park")
+   if len(chineseRaceDeck) < 1:
+      exportLanguageDeckinCSV(chineseDeck, "chinesePark")
 
-   importCSVinDeck("park", parkDeck)
-   importCSVinDeck("win", winDeck)
+   importCSVinDeck("chinesePark", chineseParkDeck)
+   importCSVinDeck("chineseWin", chineseWinDeck)
 
-   if len(raceDeck) < 1:
+   if len(chineseRaceDeck) < 1:
       preparation()
 
-   exportDeckinCSV(parkDeck, "park")
-   exportDeckinCSV(raceDeck, "race")
+   exportDeckinCSV(chineseParkDeck, "chinesePark")
+   exportDeckinCSV(chineseRaceDeck, "chineseRace")
 
    race = True
 
@@ -394,10 +395,10 @@ while pro3:
    while race:
 
       item = {
-         "fuel": int(raceDeck[0][0][0]),
-         "tank": int(raceDeck[0][0][1]),
-         "statement": raceDeck[0][1][0],
-         "answer": raceDeck[0][1][1],
+         "fuel": int(chineseRaceDeck[0][0][0]),
+         "tank": int(chineseRaceDeck[0][0][1]),
+         "statement": chineseRaceDeck[0][1][0],
+         "answer": chineseRaceDeck[0][1][1],
       }
 
       print1 = ""
@@ -405,9 +406,9 @@ while pro3:
 
       askCapsule()
 
-      exportDeckinCSV(parkDeck, "park")
-      exportDeckinCSV(raceDeck, "race")
-      exportDeckinCSV(winDeck, "win")
+      exportDeckinCSV(chineseParkDeck, "chinesePark")
+      exportDeckinCSV(chineseRaceDeck, "chineseRace")
+      exportDeckinCSV(chineseWinDeck, "chineseWin")
       
       prYellow("CONTIIIINUE>>>>>>>>")
       step = input()
